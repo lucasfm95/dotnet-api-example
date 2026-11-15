@@ -9,7 +9,7 @@ WORKDIR /app
 COPY --from=build /app/published-app /app
 
 ENV ASPNETCORE_ENVIRONMENT=production
-ENV ASPNETCORE_HTTP_PORTS=80
-EXPOSE 80
+ENV ASPNETCORE_HTTP_PORTS=8080
+EXPOSE 8080
 
 ENTRYPOINT [ "dotnet", "/app/DotNetApiExample.dll" ]
