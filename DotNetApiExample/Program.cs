@@ -5,11 +5,8 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-}
+app.MapOpenApi();
+app.MapScalarApiReference();
 
 app.MapPost("/echo", (MessageRequest request) => Results.Ok(new MessageResponse($"Your message is: {request.Message}")))
     .WithName("Echo")
