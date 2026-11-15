@@ -5,6 +5,7 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["**"]
+  workflow_dispatch:
 
 jobs:
   build-and-test:
@@ -31,7 +32,7 @@ jobs:
   docker-hub:
     name: Build and publish image to Docker Hub
     needs: build-and-test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
 
     steps:
@@ -56,3 +57,14 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
           push: true
+
+  deploy:
+    name: Deploy on VPS
+    needs: docker-hub
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    runs-on: [self-hosted, vps]
+    concurrency: deploy-production
+
+    steps:
+      - name: Deploy
+        run: deploy-app ${{ github.event.repository.name }} latest
