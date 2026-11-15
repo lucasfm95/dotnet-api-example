@@ -8,7 +8,7 @@ var app = builder.Build();
 app.MapOpenApi();
 app.MapScalarApiReference();
 
-app.MapPost("/echo", (MessageRequest request) => Results.Ok(new MessageResponse($"Your message is: {request.Message}")))
+app.MapPost("/echo", (MessageRequest request) => Results.Ok(new MessageResponse($"[version 2] Your message is: {request.Message}")))
     .WithName("Echo")
     .WithSummary("Returns the received message")
     .WithDescription("Receives a message in the request body and returns it prefixed with \"Your message is:\".")
